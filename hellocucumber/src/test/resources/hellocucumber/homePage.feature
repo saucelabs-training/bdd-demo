@@ -2,6 +2,11 @@ Feature: Home page
   Home page is working as expected
 
   Scenario: Home page opens
+    Given a user opens the browser
+    When the user navigates to the Sauce Demo home page
+    Then it's visible
+
+  Scenario: Home page opens
     Given a user opens the latest chrome on mac
     When they navigate to the Sauce Demo home page
     Then it's visible
