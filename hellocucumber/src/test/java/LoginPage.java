@@ -1,21 +1,26 @@
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class LoginPage {
-    private final WebDriver driver;
+public class LoginPage extends BasePage {
 
     public LoginPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
     }
-
+    public By getUserNameLocator()
+    {
+        return By.id("user-name");
+    }
     public void open() {
         driver.get("https://www.saucedemo.com/");
     }
 
-    public boolean isVisible() {
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-        return wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("user-name"))).isDisplayed();
+    public boolean isLoaded() {
+        return isElementDisplayed(getUserNameLocator());
+    }
+
+    public void login(String username, String password) {
+        driver.findElement(getUserNameLocator()).sendKeys(username);
+        driver.findElement(By.id("password")).sendKeys(password);
+        driver.findElement(By.className("btn_action")).click();
     }
 }
