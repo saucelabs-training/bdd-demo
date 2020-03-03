@@ -1,7 +1,4 @@
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.rules.TestName;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -23,6 +20,7 @@ public class LoginFeatureTest {
 
     @Rule
     public TestName testName = new TestName();
+    private static String buildName;
 
     @Parameterized.Parameters
     public static Collection<Object[]> data() {
@@ -33,9 +31,11 @@ public class LoginFeatureTest {
                 { "Firefox", "Windows 10", "latest" },
                 { "Firefox", "Windows 10", "latest-1" },
                 { "Firefox", "Windows 10", "latest-2" },
-                { "Chrome", "Linux", "latest" },
-                { "Chrome", "Linux", "latest-1" },
-                { "Chrome", "Linux", "latest-2" }
+                { "Chrome", "Windows 8.1", "latest" },
+                { "Chrome", "Windows 8.1", "latest-1" },
+                { "Firefox", "Windows 8.1", "latest" },
+                { "Firefox", "Windows 8.1", "latest-1" }
+
         });
     }
 
@@ -48,6 +48,11 @@ public class LoginFeatureTest {
     @Parameterized.Parameter(2)
     public String browserVersion;
 
+    @BeforeClass
+    public static void setupClass()
+    {
+        buildName = "non-cuke-" + java.util.UUID.randomUUID();
+    }
     @Before
     public void setup() throws MalformedURLException {
         createDriver();
@@ -86,7 +91,7 @@ public class LoginFeatureTest {
         sauceOpts.setCapability("username", sauceUsername);
         sauceOpts.setCapability("accessKey", sauceAccessKey);
         sauceOpts.setCapability("name", testName.getMethodName());
-        sauceOpts.setCapability("build", "best-practices");
+        sauceOpts.setCapability("build", buildName);
         sauceOpts.setCapability("tags", "['best-practices', 'best-practices']");
 
         MutableCapabilities browserOptions = new MutableCapabilities();
