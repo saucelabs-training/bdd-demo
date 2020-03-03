@@ -1,7 +1,8 @@
-
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestName;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.openqa.selenium.MutableCapabilities;
@@ -20,11 +21,21 @@ import static org.junit.Assert.assertTrue;
 public class LoginFeatureTest {
     public WebDriver driver;
 
+    @Rule
+    public TestName testName = new TestName();
+
     @Parameterized.Parameters
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][] {
-                { "Chrome", "MacOS 10.12", "latest" },
-                { "Safari", "MacOS 10.15", "latest" }
+                { "Chrome", "Windows 10", "latest" },
+                { "Chrome", "Windows 10", "latest-1" },
+                { "Chrome", "Windows 10", "latest-2" },
+                { "Firefox", "Windows 10", "latest" },
+                { "Firefox", "Windows 10", "latest-1" },
+                { "Firefox", "Windows 10", "latest-2" },
+                { "Chrome", "Linux", "latest" },
+                { "Chrome", "Linux", "latest-1" },
+                { "Chrome", "Linux", "latest-2" }
         });
     }
 
@@ -74,6 +85,7 @@ public class LoginFeatureTest {
         MutableCapabilities sauceOpts = new MutableCapabilities();
         sauceOpts.setCapability("username", sauceUsername);
         sauceOpts.setCapability("accessKey", sauceAccessKey);
+        sauceOpts.setCapability("name", testName.getMethodName());
         sauceOpts.setCapability("build", "best-practices");
         sauceOpts.setCapability("tags", "['best-practices', 'best-practices']");
 
